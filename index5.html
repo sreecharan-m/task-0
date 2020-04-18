@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+ 
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="index.css">
+   
+    <title>FAST</title>
+ 
+</head>
+<body>
+    
+  <div class="content">
+      <div class="top">
+            <div id="time">
+                <div class="topcontent">TIME</div>
+                <div id="timevalue"></div>
+            </div>
+            <div id="besttime">
+                <div class="topcontent">BEST TIME</div>
+                <div id="besttimevalue"></div>
+            </div>
+      </div>
+ 
+      <div class="welcome">
+            <div class="intro">
+           
+            <i>Let's Find Whose Is The Fastest...!<br> Click The Numbers In Ascending Order As Fast As You Can</i>
+             
+ 
+            </div>
+            <div class="gamename">
+                Never Settle
+            </div>
+      </div>
+ 
+      <div class="layout">
+         <div id="tableencloser"> 
+            
+         </div>
+      </div>
+</div>
+<script>
+ 
+ let totall=3;
+ let tableBox =document.getElementById('tableencloser');
+ let bestTime = document.getElementById('besttimevalue');
+ let bestScore;
+ localStorage.bestScore=0;
+ bestTime.innerHTML = localStorage.bestScore;
+ 
+
+ function startCountdown() {
+      
+            console.log("enetred");
+            var timerIdd = setInterval(function() {
+            
+            tableBox.innerHTML = totall.toFixed(0);
+            totall = totall-1; 
+            
+            if(totall < 0){
+              
+              clearInterval(timerIdd);
+
+              tableBox.innerHTML='';
+              tableBox.innerHTML ='<div class="difficultylevel">\
+                                   <div class="easy">\
+                                   <button id="easybutton">EASY</button>\
+                                   </div>\
+                                   <div class="moderate">\
+                                   <button id="moderatebutton">MODERATE</button>\
+                                   </div>\
+                                   <div class="hard">\
+                                   <button id="hardbutton">HARD</button>\
+                                   </div>\
+                                   </div>'
+
+
+                var easy = document.getElementsByClassName('easy');
+                var moderate = document.getElementsByClassName('moderate');
+                var hard = document.getElementsByClassName('hard');
+
+                easy[0].addEventListener("click",function(event)
+                {
+                  tableBox.innerHTML='';
+                  clickeventeasy();
+                  timeRun();
+                })
+
+                moderate[0].addEventListener("click",function(event)
+                {
+                  tableBox.innerHTML='';
+                  clickeventmoderate();
+                  timeRun();
+                })
+
+                hard[0].addEventListener("click",function(event)
+                {
+                  tableBox.innerHTML='';
+                  clickeventhard();
+                  timeRun();
+                })
+
+          
+        }
+          
+      }, 1000);
+      
+}
+
+  startCountdown();
+
+
+function timeRun(){
+
+   let timeValue = document.getElementById('timevalue');
+
+
+        startTime = new Date().getTime();
+
+         
+        timerId = setInterval(function() {
+        total = (new Date().getTime() - startTime) / 1000;
+
+        
+        timeValue.innerHTML = total.toFixed(3);
+        
+         if(total >=61){
+        
+         alert("Hey its toooo slow....not eligeble...Try again Later");
+
+         clearInterval(timerId);
+         } 
+          
+      }, 1);
+
+}
+
+
+function clickeventeasy(){
+
+
+ var tbl = document.createElement('table');  
+
+                let data = [[11,5,16,2,10],[13,8,18,4,6],[7,12,19,1,9],[20,15,14,17,3]];
+
+                data.forEach(function(el) {
+                
+                var tr = document.createElement("tr");
+                let arr = el;
+
+                arr.forEach(function(el) {  
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode(el));
+                td.className="value";
+                tr.appendChild(td);
+                })
+                 
+
+                 tbl.appendChild(tr);  
+               });
+
+            tableBox.appendChild(tbl);
+
+
+
+const tableItems = document.getElementsByClassName('value');
+
+for(const elements of tableItems){
+     
+    var p=0;
+
+    elements.addEventListener("click",function(event){
+          
+        if(elements.innerHTML == (p+1))
+        {
+        elements.classList.add('clicked');
+        p=p+1;
+        if(p>=20){
+
+         clearInterval(timerId);
+         if(localStorage.bestScore < total){
+
+          localStorage.bestScore = total;
+        }
+          
+          bestTime.innerHTML = localStorage.bestScore;
+         
+        }
+        }
+    }) 
+}
+
+}
+
+function clickeventmoderate(){
+
+
+ var tbl = document.createElement('table');  
+
+                let data = [[25,4,10,3,9,21],[14,8,2,11,12,28],[5,7,13,1,26,17],[20,29,22,16,23,24],[15,6,27,18,19,30]];
+
+                data.forEach(function(el) {
+                
+                var tr = document.createElement("tr");
+                let arr = el;
+
+                arr.forEach(function(el) {  
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode(el));
+                td.className="value";
+                tr.appendChild(td);
+                })
+                 
+
+                 tbl.appendChild(tr);  
+               });
+
+            tableBox.appendChild(tbl);
+
+
+
+const tableItems = document.getElementsByClassName('value');
+
+for(const elements of tableItems){
+     
+    var p=0;
+
+    elements.addEventListener("click",function(event){
+          
+        if(elements.innerHTML == (p+1))
+        {
+        elements.classList.add('clicked');
+        p=p+1;
+        if(p>=30){
+
+         clearInterval(timerId);
+         if(localStorage.bestScore < total){
+
+          localStorage.bestScore = total;
+        }
+          
+          bestTime.innerHTML = localStorage.bestScore;
+         
+        }
+        }
+    }) 
+}
+
+}
+
+
+function clickeventhard(){
+
+
+ var tbl = document.createElement('table');  
+
+                let data = [[11,29,15,40,28,3,42],[21,41,25,2,30,12,22],[26,1,14,20,4,31,13],[27,18,10,24,32,6,33],[9,34,5,35,17,19,39],[7,38,16,36,8,37,23]];
+
+                data.forEach(function(el) {
+                
+                var tr = document.createElement("tr");
+                let arr = el;
+
+                arr.forEach(function(el) {  
+                var td = document.createElement("td");
+                td.appendChild(document.createTextNode(el));
+                td.className="value";
+                tr.appendChild(td);
+                })
+                 
+
+                 tbl.appendChild(tr);  
+               });
+
+            tableBox.appendChild(tbl);
+
+
+
+const tableItems = document.getElementsByClassName('value');
+
+for(const elements of tableItems){
+     
+    var p=0;
+
+    elements.addEventListener("click",function(event){
+          
+        if(elements.innerHTML == (p+1))
+        {
+        elements.classList.add('clicked');
+        p=p+1;
+        if(p>=42){
+
+         clearInterval(timerId);
+         if(localStorage.bestScore < total){
+
+          localStorage.bestScore = total;
+        }
+          
+          bestTime.innerHTML = localStorage.bestScore;
+         
+        }
+        }
+    }) 
+}
+
+}
+
+
+
+ 
+</script>  
+  
+</body>
+ 
+</html>
