@@ -1,0 +1,86 @@
+///////////////////////// after installing lamp server ///////////////////////
+
+troop=(Army,Navy,AirForce)
+for j in {0..2}
+do
+for i in {1..50}
+do
+sudo mkdir -p /var/www/soldier.io/${troop[j]}$i
+touch /var/www/soldier.io/${troop[j]}$i/index.html
+echo "welcome to the page ${troop[j]}$i" >> /var/www/soldier.io/${troop[j]}$i/index.html
+done
+done
+
+sudo mkdir -p /var/www/soldier.io/chief
+touch /var/www/soldier.io/chief/index.html
+
+////////////////////////////// conf file for soldier.io /////////////////////////
+
+
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/soldier.io.conf
+
+sudo nano /etc/apache2/sites-available/soldier.io.conf
+
+////// inside the conf file adding server name,alias and changing document root////////
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    ServerName soldier.io
+    ServerAlias www.soldier.io
+    DocumentRoot /var/www/soldier.io
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+////////////// enabling virtual host
+
+sudo a2ensite soldier.io.conf
+sudo systemctl restart apache2
+
+/////////////// adding domain address in etc/hosts
+
+127.0.0.1 localhost
+127.0.0.1 soldier.io
+
+////////////////////  enabling separate page for chief///
+
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+
+//// setting .htaccess
+
+    <Directory /var/www/soldier.io>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
+    </Directory> 
+///(adding this new block in /etc/apache2/sites-available/000-default.conf)
+
+sudo systemctl restart apache
+
+////inside /var/www/soldier.io/.htaccess
+
+RewriteEngine on
+RewriteCond %{HTTP_USER_AGENT} ^string\/(.*)$
+RewriteRule ^(.*)$ www.soldier.io/chief
+
+////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// sub task-2 /////////////////////////////////////////
+
+///creating docker file in a directory and putting all the scripts of task-1 in that
+
+FROM ubuntu
+COPY ./subtask1.sh /
+COPY ./subtask2.sh /
+COPY ./subtask2.sh /
+COPY ./subtask3.sh /
+COPY ./subtask4.sh /
+RUN chmod +x /subtask1.sh
+RUN chmod +x /subtask2.sh
+RUN chmod +x /subtask3.sh
+RUN chmod +x /subtask4.sh
+RUN chmod +x /subtask5.sh
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
